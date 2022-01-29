@@ -1,24 +1,31 @@
-import 'package:flutter/cupertino.dart';
+import 'package:todolistapp/domain/model/task.dart';
 
-import '../../domain/model/task.dart';
+import '../../domain/use_case/add_task_use_case.dart';
+import '../../domain/use_case/remove_task_use_case.dart';
+import '../../domain/use_case/update_status_task_use_case.dart';
 
 class HomeController {
-  TextEditingController taskTextEditingController = TextEditingController();
-  List<Task> taskList = [];
+  HomeController(
+    this.addTaskUseCase,
+    this.removeTaskUseCase,
+    this.updateStatusTaskUseCase,
+    this.taskList,
+  );
 
-  void addTask() {
-    if (taskTextEditingController.text.isNotEmpty) {
-      final newTask = Task(description: taskTextEditingController.text);
-      taskList.add(newTask);
-      taskTextEditingController.clear();
-    }
+  final AddTaskUseCase addTaskUseCase;
+  final RemoveTaskUseCase removeTaskUseCase;
+  final UpdateStatusTaskUseCase updateStatusTaskUseCase;
+  final List<Task> taskList;
+
+  void addTask(String typedTask) {
+    addTaskUseCase.add(typedTask, taskList);
   }
 
-  void updateStatusTask(int index, bool? isCompletedTask) {
-    taskList[index].completed = isCompletedTask ?? false;
+  void removeTask(int index) {
+    removeTaskUseCase.remove(index, taskList);
   }
 
-  void onRemovedTaskOfList(int index) {
-    taskList.removeAt(index);
+  void updateTask(int index, bool? isCompletedTask) {
+    updateStatusTaskUseCase.update(index, isCompletedTask, taskList);
   }
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:todolistapp/presentation/task/home_controller.dart';
 
 import '../../constants/constant_images.dart';
+import '../../domain/model/task.dart';
+import '../../domain/use_case/add_task_use_case.dart';
+import '../../domain/use_case/remove_task_use_case.dart';
+import '../../domain/use_case/update_status_task_use_case.dart';
 import '../../generated/l10n.dart';
+import 'home_controller.dart';
 import 'input_task_widget.dart';
 import 'list_task_widget.dart';
 
@@ -14,7 +18,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeController homeController = HomeController();
+  late AddTaskUseCase addTaskUseCase;
+  late RemoveTaskUseCase removeTaskUseCase;
+  late UpdateStatusTaskUseCase updateStatusTaskUseCase;
+  late HomeController homeController;
+  late List<Task> listTask;
+  late TextEditingController taskTextEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    addTaskUseCase = AddTaskUseCase();
+    removeTaskUseCase = RemoveTaskUseCase();
+    updateStatusTaskUseCase = UpdateStatusTaskUseCase();
+    listTask = [];
+    homeController = HomeController(
+      addTaskUseCase,
+      removeTaskUseCase,
+      updateStatusTaskUseCase,
+      listTask,
+    );
+    taskTextEditingController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -35,10 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.fromLTRB(17, 24, 17, 40),
               child: InputTaskWidget(
                   onPressed: () {
-                    setState(homeController.addTask);
+                    setState(() {
+                      homeController.addTask(taskTextEditingController.text);
+                    });
                   },
-                  taskTextEditingController:
-                      homeController.taskTextEditingController,
+                  taskTextEditingController: taskTextEditingController,
                   textButton: S.of(context).homeScreenTextButton,
                   labelText: S.of(context).homeScreenNewTaskText),
             ),
@@ -46,13 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListTaskWidget(
                 onRemoved: (index) {
                   setState(() {
-                    homeController.onRemovedTaskOfList(index);
+                    homeController.removeTask(index);
                   });
                 },
                 listTask: homeController.taskList,
                 onChanged: (isCompletedTask, index) => setState(
                   () {
-                    homeController.updateStatusTask(index, isCompletedTask);
+                    homeController.updateTask(index, isCompletedTask);
                   },
                 ),
               ),
