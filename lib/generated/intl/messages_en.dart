@@ -22,7 +22,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "homeScreenAddText": MessageLookupByLibrary.simpleMessage("Add task"),
         "homeScreenAppBarTitle": MessageLookupByLibrary.simpleMessage("To do"),
         "homeScreenNewTaskText":
             MessageLookupByLibrary.simpleMessage("Nova task"),

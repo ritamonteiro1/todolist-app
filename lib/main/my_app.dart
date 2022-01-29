@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../constants/constant_colors.dart';
 import '../constants/constant_fonts.dart';
 import '../generated/l10n.dart';
-import '../view/home_screen.dart';
+import '../view/home_screen/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

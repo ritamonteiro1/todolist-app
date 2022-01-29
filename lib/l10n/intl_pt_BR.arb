@@ -1,7 +1,6 @@
 {
   "@@ locale": "pt_BR",
   "homeScreenAppBarTitle": "Lista de tarefas",
-  "homeScreenAddText": "Adicionar tarefa",
   "homeScreenNewTaskText": "Nova tarefa",
   "homeScreenTextButton": "Add"
 }
