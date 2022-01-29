@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todolistapp/presentation/task/home_controller.dart';
 
 import '../../constants/constant_images.dart';
-import '../../domain/task.dart';
 import '../../generated/l10n.dart';
-import 'widgets/input_task_widget.dart';
-import 'widgets/list_task_widget.dart';
+import 'input_task_widget.dart';
+import 'list_task_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,18 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final taskTextEditingController = TextEditingController();
-  List<Task> taskList = [];
-
-  void addTask() {
-    final newTask = Task(description: taskTextEditingController.text);
-    taskList.add(newTask);
-    taskTextEditingController.clear();
-  }
-
-  void updateStatusTask(int index, bool? isCompletedTask) {
-    taskList[index].completed = isCompletedTask ?? false;
-  }
+  HomeController homeController = HomeController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -46,18 +35,24 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.fromLTRB(17, 24, 17, 40),
               child: InputTaskWidget(
                   onPressed: () {
-                    setState(addTask);
+                    setState(homeController.addTask);
                   },
-                  taskTextEditingController: taskTextEditingController,
+                  taskTextEditingController:
+                      homeController.taskTextEditingController,
                   textButton: S.of(context).homeScreenTextButton,
                   labelText: S.of(context).homeScreenNewTaskText),
             ),
             Expanded(
               child: ListTaskWidget(
-                listTask: taskList,
+                onRemoved: (index) {
+                  setState(() {
+                    homeController.onRemovedTaskOfList(index);
+                  });
+                },
+                listTask: homeController.taskList,
                 onChanged: (isCompletedTask, index) => setState(
                   () {
-                    updateStatusTask(index, isCompletedTask);
+                    homeController.updateStatusTask(index, isCompletedTask);
                   },
                 ),
               ),
