@@ -1,5 +1,7 @@
 {
   "@@ locale": "en",
   "homeScreenAppBarTitle": "To do",
-  "homeScreenAddText": "Add"
+  "homeScreenAddText": "Add task",
+  "homeScreenNewTaskText": "Nova task",
+  "homeScreenTextButton": "Add"
 }

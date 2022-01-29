@@ -60,11 +60,31 @@ class S {
     );
   }
 
-  /// `Add`
+  /// `Add task`
   String get homeScreenAddText {
     return Intl.message(
-      'Add',
+      'Add task',
       name: 'homeScreenAddText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nova task`
+  String get homeScreenNewTaskText {
+    return Intl.message(
+      'Nova task',
+      name: 'homeScreenNewTaskText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get homeScreenTextButton {
+    return Intl.message(
+      'Add',
+      name: 'homeScreenTextButton',
       desc: '',
       args: [],
     );
