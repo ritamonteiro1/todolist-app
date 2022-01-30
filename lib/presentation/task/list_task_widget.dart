@@ -7,14 +7,12 @@ class ListTaskWidget extends StatelessWidget {
   const ListTaskWidget({
     required this.onChanged,
     required this.listTask,
-    required this.onRemoved,
-    required this.confirmRemoved,
+    required this.confirmRemoveTask,
     Key? key,
   }) : super(key: key);
   final Function(bool?, int) onChanged;
   final List<Task> listTask;
-  final Function(int) onRemoved;
-  final Function(int) confirmRemoved;
+  final Function(int) confirmRemoveTask;
 
   @override
   Widget build(BuildContext context) => ListView.builder(
@@ -22,8 +20,7 @@ class ListTaskWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           final task = listTask[index];
           return TaskItemWidget(
-            onDismissed: () => onRemoved(index),
-            confirmDismiss: () => confirmRemoved(index),
+            confirmDismiss: () => confirmRemoveTask(index),
             task: task,
             onChanged: (completed) => onChanged(
               completed,

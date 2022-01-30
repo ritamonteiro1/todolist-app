@@ -71,12 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: ListTaskWidget(
-                onRemoved: (index) {
-                  setState(() {
-                    homeController.removeTask(index);
-                  });
-                },
-                confirmRemoved: _showAlertDialog,
+                confirmRemoveTask: _showAlertDialog,
                 listTask: homeController.taskList,
                 onChanged: (isCompletedTask, index) => setState(
                   () {
