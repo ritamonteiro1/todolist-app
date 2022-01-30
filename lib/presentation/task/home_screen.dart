@@ -76,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     homeController.removeTask(index);
                   });
                 },
+                confirmRemoved: _showAlertDialog,
                 listTask: homeController.taskList,
                 onChanged: (isCompletedTask, index) => setState(
                   () {
@@ -87,4 +88,32 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       );
+
+  void _showAlertDialog(int index) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(S.of(context).messageAlertTitle),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(S.of(context).alertDialogNegativeButton),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          homeController.removeTask(index);
+                        });
+                      },
+                      child: Text(S.of(context).alertDialogPositiveButton),
+                    ),
+                  ],
+                ),
+              ],
+            ));
+  }
 }

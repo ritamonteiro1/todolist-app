@@ -8,11 +8,13 @@ class ListTaskWidget extends StatelessWidget {
     required this.onChanged,
     required this.listTask,
     required this.onRemoved,
+    required this.confirmRemoved,
     Key? key,
   }) : super(key: key);
   final Function(bool?, int) onChanged;
   final List<Task> listTask;
   final Function(int) onRemoved;
+  final Function(int) confirmRemoved;
 
   @override
   Widget build(BuildContext context) => ListView.builder(
@@ -21,6 +23,7 @@ class ListTaskWidget extends StatelessWidget {
           final task = listTask[index];
           return TaskItemWidget(
             onDismissed: () => onRemoved(index),
+            confirmDismiss: () => confirmRemoved(index),
             task: task,
             onChanged: (completed) => onChanged(
               completed,

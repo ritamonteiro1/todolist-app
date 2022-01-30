@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../domain/model/task.dart';
 
 class TaskItemWidget extends StatelessWidget {
@@ -6,17 +7,20 @@ class TaskItemWidget extends StatelessWidget {
     required this.task,
     required this.onChanged,
     required this.onDismissed,
+    required this.confirmDismiss,
     Key? key,
   }) : super(key: key);
   final Task task;
   final Function(bool?) onChanged;
   final Function() onDismissed;
+  final Function() confirmDismiss;
 
   @override
   Widget build(BuildContext context) => Dismissible(
         onDismissed: (_) {
           onDismissed();
         },
+        confirmDismiss: (_) async => await confirmDismiss(),
         key: Key(
           DateTime.now().microsecondsSinceEpoch.toString(),
         ),
