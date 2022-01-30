@@ -2,5 +2,8 @@
   "@@ locale": "pt_BR",
   "homeScreenAppBarTitle": "Lista de tarefas",
   "homeScreenNewTaskText": "Nova tarefa",
-  "homeScreenTextButton": "Add"
+  "homeScreenTextButton": "Add",
+  "messageAlertTitle": "Deseja mesmo excluir essa tarefa?",
+  "alertDialogPositiveButton": "Sim",
+  "alertDialogNegativeButton": "Não"
 }

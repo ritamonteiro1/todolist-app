@@ -2,5 +2,8 @@
   "@@ locale": "en",
   "homeScreenAppBarTitle": "To do",
   "homeScreenNewTaskText": "Nova task",
-  "homeScreenTextButton": "Add"
+  "homeScreenTextButton": "Add",
+  "messageAlertTitle": "Do you really want to delete this task?",
+  "alertDialogPositiveButton": "Yes",
+  "alertDialogNegativeButton": "No"
 }

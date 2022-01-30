@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     setState(() {
                       homeController.addTask(taskTextEditingController.text);
+                      taskTextEditingController.clear();
                     });
                   },
                   taskTextEditingController: taskTextEditingController,

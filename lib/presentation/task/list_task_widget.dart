@@ -20,7 +20,7 @@ class ListTaskWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           final task = listTask[index];
           return TaskItemWidget(
-            onDismissed: (direction) => onRemoved(index),
+            onDismissed: () => onRemoved(index),
             task: task,
             onChanged: (completed) => onChanged(
               completed,

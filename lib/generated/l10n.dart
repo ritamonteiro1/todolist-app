@@ -79,6 +79,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Do you really want to delete this task?`
+  String get messageAlertTitle {
+    return Intl.message(
+      'Do you really want to delete this task?',
+      name: 'messageAlertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get alertDialogPositiveButton {
+    return Intl.message(
+      'Yes',
+      name: 'alertDialogPositiveButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get alertDialogNegativeButton {
+    return Intl.message(
+      'No',
+      name: 'alertDialogNegativeButton',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

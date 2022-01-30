@@ -15,17 +15,21 @@ class HomeController {
   final AddTaskUseCase addTaskUseCase;
   final RemoveTaskUseCase removeTaskUseCase;
   final UpdateStatusTaskUseCase updateStatusTaskUseCase;
-  final List<Task> taskList;
+  List<Task> taskList;
 
   void addTask(String typedTask) {
-    addTaskUseCase.add(typedTask, taskList);
+    final tasks = addTaskUseCase.add(typedTask, taskList);
+    taskList = tasks;
   }
 
   void removeTask(int index) {
-    removeTaskUseCase.remove(index, taskList);
+    final tasks = removeTaskUseCase.remove(index, taskList);
+    taskList = tasks;
   }
 
   void updateTask(int index, bool? isCompletedTask) {
-    updateStatusTaskUseCase.update(index, isCompletedTask, taskList);
+    final tasks =
+        updateStatusTaskUseCase.update(index, isCompletedTask, taskList);
+    taskList = tasks;
   }
 }

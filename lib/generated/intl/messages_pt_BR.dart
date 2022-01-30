@@ -22,10 +22,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "alertDialogNegativeButton":
+            MessageLookupByLibrary.simpleMessage("Não"),
+        "alertDialogPositiveButton":
+            MessageLookupByLibrary.simpleMessage("Sim"),
         "homeScreenAppBarTitle":
             MessageLookupByLibrary.simpleMessage("Lista de tarefas"),
         "homeScreenNewTaskText":
             MessageLookupByLibrary.simpleMessage("Nova tarefa"),
-        "homeScreenTextButton": MessageLookupByLibrary.simpleMessage("Add")
+        "homeScreenTextButton": MessageLookupByLibrary.simpleMessage("Add"),
+        "messageAlertTitle": MessageLookupByLibrary.simpleMessage(
+            "Deseja mesmo excluir essa tarefa?")
       };
 }

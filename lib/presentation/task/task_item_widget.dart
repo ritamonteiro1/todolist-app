@@ -10,11 +10,13 @@ class TaskItemWidget extends StatelessWidget {
   }) : super(key: key);
   final Task task;
   final Function(bool?) onChanged;
-  final Function(DismissDirection) onDismissed;
+  final Function() onDismissed;
 
   @override
   Widget build(BuildContext context) => Dismissible(
-        onDismissed: (direction) => onDismissed,
+        onDismissed: (_) {
+          onDismissed();
+        },
         key: Key(
           DateTime.now().microsecondsSinceEpoch.toString(),
         ),
