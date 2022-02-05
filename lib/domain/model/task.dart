@@ -5,5 +5,5 @@ class Task {
   });
 
   bool completed;
-  String description;
+  final String description;
 }

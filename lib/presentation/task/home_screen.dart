@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'task_item_widget.dart';
 
 import '../../constants/constant_images.dart';
-import '../../domain/model/task.dart';
 import '../../domain/use_case/add_task_use_case.dart';
 import '../../domain/use_case/remove_task_use_case.dart';
 import '../../domain/use_case/update_status_task_use_case.dart';
 import '../../generated/l10n.dart';
-import 'home_controller.dart';
-import 'input_task_widget.dart';
-import 'list_task_widget.dart';
+import 'home_store.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,12 +17,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final taskTextEditingController = TextEditingController();
   late AddTaskUseCase addTaskUseCase;
   late RemoveTaskUseCase removeTaskUseCase;
   late UpdateStatusTaskUseCase updateStatusTaskUseCase;
-  late HomeController homeController;
-  late List<Task> listTask;
-  late TextEditingController taskTextEditingController;
+  late HomeStore homeStore;
 
   @override
   void initState() {
@@ -31,14 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
     addTaskUseCase = AddTaskUseCase();
     removeTaskUseCase = RemoveTaskUseCase();
     updateStatusTaskUseCase = UpdateStatusTaskUseCase();
-    listTask = [];
-    homeController = HomeController(
+    homeStore = HomeStore(
       addTaskUseCase,
       removeTaskUseCase,
       updateStatusTaskUseCase,
-      listTask,
     );
-    taskTextEditingController = TextEditingController();
   }
 
   @override
@@ -58,27 +53,54 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(17, 24, 17, 40),
-              child: InputTaskWidget(
-                  onPressed: () {
-                    setState(() {
-                      homeController.addTask(taskTextEditingController.text);
-                      taskTextEditingController.clear();
-                    });
-                  },
-                  taskTextEditingController: taskTextEditingController,
-                  textButton: S.of(context).homeScreenTextButton,
-                  labelText: S.of(context).homeScreenNewTaskText),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: TextField(
+                      keyboardType: TextInputType.name,
+                      onChanged: homeStore.setTypedTaskDescription,
+                      controller: taskTextEditingController,
+                      decoration: InputDecoration(
+                          labelText: S.of(context).homeScreenNewTaskText),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Observer(
+                      builder: (context) => Container(
+                        child: homeStore.isTypedTaskDescriptionValid
+                            ? TextButton(
+                                child: Text(S.of(context).homeScreenTextButton),
+                                onPressed: () {
+                                  homeStore
+                                      .addTask(taskTextEditingController.text);
+                                  taskTextEditingController.clear();
+                                },
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
-              child: ListTaskWidget(
-                confirmRemoveTask: _showAlertDialog,
-                listTask: homeController.taskList,
-                onChanged: (isCompletedTask, index) => setState(
-                  () {
-                    homeController.updateTask(index, isCompletedTask);
-                  },
-                ),
-              ),
+              child: Observer(
+                  builder: (context) => ListView.builder(
+                        itemCount: homeStore.taskList.length,
+                        itemBuilder: (context, clickedTaskIndex) {
+                          final task = homeStore.taskList[clickedTaskIndex];
+                          return TaskItemWidget(
+                            confirmDismiss: () =>
+                                _showAlertDialog(clickedTaskIndex),
+                            task: task,
+                            onChanged: (isCompletedTask) => homeStore
+                                .updateTask(clickedTaskIndex, isCompletedTask),
+                          );
+                        },
+                      )),
             ),
           ],
         ),
@@ -100,9 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        setState(() {
-                          homeController.removeTask(index);
-                        });
+                        homeStore.removeTask(index);
                       },
                       child: Text(S.of(context).alertDialogPositiveButton),
                     ),

@@ -27,7 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Yes"),
         "homeScreenAppBarTitle": MessageLookupByLibrary.simpleMessage("To do"),
         "homeScreenNewTaskText":
-            MessageLookupByLibrary.simpleMessage("Nova task"),
+            MessageLookupByLibrary.simpleMessage("New task"),
         "homeScreenTextButton": MessageLookupByLibrary.simpleMessage("Add"),
         "messageAlertTitle": MessageLookupByLibrary.simpleMessage(
             "Do you really want to delete this task?")

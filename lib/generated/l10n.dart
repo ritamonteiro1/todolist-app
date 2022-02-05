@@ -60,10 +60,10 @@ class S {
     );
   }
 
-  /// `Nova task`
+  /// `New task`
   String get homeScreenNewTaskText {
     return Intl.message(
-      'Nova task',
+      'New task',
       name: 'homeScreenNewTaskText',
       desc: '',
       args: [],
