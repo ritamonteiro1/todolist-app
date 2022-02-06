@@ -13,16 +13,16 @@ mixin _$HomeStore on _HomeStore, Store {
       Atom(name: '_HomeStore.isTypedTaskDescriptionValid');
 
   @override
-  bool get isTypedTaskDescriptionValid {
+  bool get isFilledDescriptionTaskField {
     _$isTypedTaskDescriptionValidAtom.reportRead();
-    return super.isTypedTaskDescriptionValid;
+    return super.isFilledDescriptionTaskField;
   }
 
   @override
-  set isTypedTaskDescriptionValid(bool value) {
+  set isFilledDescriptionTaskField(bool value) {
     _$isTypedTaskDescriptionValidAtom
-        .reportWrite(value, super.isTypedTaskDescriptionValid, () {
-      super.isTypedTaskDescriptionValid = value;
+        .reportWrite(value, super.isFilledDescriptionTaskField, () {
+      super.isFilledDescriptionTaskField = value;
     });
   }
 
@@ -90,7 +90,7 @@ mixin _$HomeStore on _HomeStore, Store {
   @override
   String toString() {
     return '''
-isTypedTaskDescriptionValid: ${isTypedTaskDescriptionValid},
+isTypedTaskDescriptionValid: ${isFilledDescriptionTaskField},
 taskList: ${taskList}
     ''';
   }

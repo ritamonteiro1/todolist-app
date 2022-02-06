@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'task_item_widget.dart';
 
 import '../../constants/constant_images.dart';
 import '../../domain/use_case/add_task_use_case.dart';
@@ -8,6 +7,7 @@ import '../../domain/use_case/remove_task_use_case.dart';
 import '../../domain/use_case/update_status_task_use_case.dart';
 import '../../generated/l10n.dart';
 import 'home_store.dart';
+import 'task_item_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    flex: 2,
+                    flex: 5,
                     child: TextField(
                       keyboardType: TextInputType.name,
                       onChanged: homeStore.setTypedTaskDescription,
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 1,
                     child: Observer(
                       builder: (context) => Container(
-                        child: homeStore.isTypedTaskDescriptionValid
+                        child: homeStore.isFilledDescriptionTaskField
                             ? TextButton(
                                 child: Text(S.of(context).homeScreenTextButton),
                                 onPressed: () {
@@ -96,8 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             confirmDismiss: () =>
                                 _showAlertDialog(clickedTaskIndex),
                             task: task,
-                            onChanged: (isCompletedTask) => homeStore
-                                .updateTask(clickedTaskIndex, isCompletedTask),
+                            onChanged: (isCompletedTask) {
+                              homeStore.updateTask(
+                                  clickedTaskIndex, isCompletedTask);
+                            },
                           );
                         },
                       )),

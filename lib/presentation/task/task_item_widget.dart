@@ -10,7 +10,7 @@ class TaskItemWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
   final Task task;
-  final void Function(bool?) onChanged;
+  final Function(bool?) onChanged;
   final Function() confirmDismiss;
 
   @override
