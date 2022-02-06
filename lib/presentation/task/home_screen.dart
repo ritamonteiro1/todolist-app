@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/constant_images.dart';
 import '../../domain/use_case/add_task_use_case.dart';
@@ -10,7 +11,28 @@ import 'home_store.dart';
 import 'task_item_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({
+    required this.homeStore,
+    Key? key,
+  }) : super(key: key);
+  final HomeStore homeStore;
+
+  static Widget create(BuildContext context) => ProxyProvider3<AddTaskUseCase,
+          RemoveTaskUseCase, UpdateStatusTaskUseCase, HomeStore>(
+        update: (context, addTaskUseCase, removeTaskUseCase,
+                updateStatusTaskUseCase, homeStore) =>
+            homeStore ??
+            HomeStore(
+              addTaskUseCase,
+              removeTaskUseCase,
+              updateStatusTaskUseCase,
+            ),
+        child: Consumer<HomeStore>(
+          builder: (context, homeStore, _) => HomeScreen(
+            homeStore: homeStore,
+          ),
+        ),
+      );
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -18,23 +40,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final taskTextEditingController = TextEditingController();
-  late AddTaskUseCase addTaskUseCase;
-  late RemoveTaskUseCase removeTaskUseCase;
-  late UpdateStatusTaskUseCase updateStatusTaskUseCase;
-  late HomeStore homeStore;
-
-  @override
-  void initState() {
-    super.initState();
-    addTaskUseCase = AddTaskUseCase();
-    removeTaskUseCase = RemoveTaskUseCase();
-    updateStatusTaskUseCase = UpdateStatusTaskUseCase();
-    homeStore = HomeStore(
-      addTaskUseCase,
-      removeTaskUseCase,
-      updateStatusTaskUseCase,
-    );
-  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -60,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 5,
                     child: TextField(
                       keyboardType: TextInputType.name,
-                      onChanged: homeStore.setTypedTaskDescription,
+                      onChanged: widget.homeStore.setTypedTaskDescription,
                       controller: taskTextEditingController,
                       decoration: InputDecoration(
                           labelText: S.of(context).homeScreenNewTaskText),
@@ -70,11 +75,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 1,
                     child: Observer(
                       builder: (context) => Container(
-                        child: homeStore.isFilledDescriptionTaskField
+                        child: widget.homeStore.isFilledDescriptionTaskField
                             ? TextButton(
                                 child: Text(S.of(context).homeScreenTextButton),
                                 onPressed: () {
-                                  homeStore
+                                  widget.homeStore
                                       .addTask(taskTextEditingController.text);
                                   taskTextEditingController.clear();
                                 },
@@ -89,15 +94,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: Observer(
                   builder: (context) => ListView.builder(
-                        itemCount: homeStore.taskList.length,
+                        itemCount: widget.homeStore.taskList.length,
                         itemBuilder: (context, clickedTaskIndex) {
-                          final task = homeStore.taskList[clickedTaskIndex];
+                          final task =
+                              widget.homeStore.taskList[clickedTaskIndex];
                           return TaskItemWidget(
                             confirmDismiss: () =>
                                 _showAlertDialog(clickedTaskIndex),
                             task: task,
                             onChanged: (isCompletedTask) {
-                              homeStore.updateTask(
+                              widget.homeStore.updateTask(
                                   clickedTaskIndex, isCompletedTask);
                             },
                           );
@@ -124,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        homeStore.removeTask(index);
+                        widget.homeStore.removeTask(index);
                       },
                       child: Text(S.of(context).alertDialogPositiveButton),
                     ),
